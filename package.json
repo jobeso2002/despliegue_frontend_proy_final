@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build:render": "npm run build && npm prune --production",
+    "start:render": "node dist/main",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
