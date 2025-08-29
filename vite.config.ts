@@ -5,7 +5,7 @@ import { defineConfig, loadEnv } from "vite"
 export default defineConfig(({ mode }) => {
   // Cargar variables de entorno según el modo
   const env = loadEnv(mode, process.cwd(), '')
-  
+
   return {
     plugins: [react()],
     resolve: {
@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 5173,
+      host: true,
       proxy: {
         "/api": {
           target: env.VITE_API_BASE_URL || "http://localhost:4001",
@@ -27,7 +28,8 @@ export default defineConfig(({ mode }) => {
     // Configuración para build
     build: {
       outDir: 'dist',
-      sourcemap: mode !== 'production',
+      sourcemap: false, // Desactivar en producción
+      emptyOutDir: true,
     },
     // Definir variables de entorno para el cliente
     define: {
