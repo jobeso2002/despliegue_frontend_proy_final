@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ... */
+
+@layer base {
+  :root {
+
+    --radius: 0.5rem
+  }
+}
+
+
+/* styles/globals.css */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoom-in {
+  from { transform: scale(1.1); }
+  to { transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
+.animate-fade-in.delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-fade-in.delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-zoom-in {
+  animation: zoom-in 10s ease-out forwards;
+}
