@@ -9,11 +9,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server:{
-    port:5173,
-    proxy:{
-      "/api":{
-        target: "http://localhost:5000", // Backend NestJS
+  server: {
+    port: 5173,
+    proxy: {
+      "/api": {
+        target: "https://despliegue-backend-final-v1-0-0.onrender.com/api", // Backend NestJS
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""),
