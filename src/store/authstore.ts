@@ -1,5 +1,3 @@
-// src/store/authstore.ts
-
 import { create } from "zustand";
 import { decryptData, encryptData } from "./decrypt/decryptData";
 import { jwtDecode } from "jwt-decode";

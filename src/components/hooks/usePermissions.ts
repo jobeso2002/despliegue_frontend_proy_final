@@ -1,4 +1,3 @@
-// src/hooks/usePermissions.ts
 import { PermisoType } from "@/enums/permisotype/permiso";
 import { useAuthStore } from "@/store/authstore";
 

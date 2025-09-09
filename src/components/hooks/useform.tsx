@@ -1,5 +1,3 @@
-// src/components/hooks/useform.ts
-
 import { useState, useCallback } from "react";
 
 export const useForm = <T extends Record<string, any>>(initialState: T) => {

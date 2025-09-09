@@ -3,7 +3,7 @@ import { decryptData } from "@/store/decrypt/decryptData";
 import axios from "axios";
 
 // Asegúrate de que esta URL coincida con tu backend (puerto 4001 según tu código)
-const config = import.meta.env.VITE_API_BASE_URL || "http://localhost:4001";
+const config = import.meta.env.VITE_API_BASE_URL || "http://localhost:4001/api";
 
 export const Api = axios.create({
   baseURL: config,
