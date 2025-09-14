@@ -117,196 +117,200 @@ function Club() {
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Registrar CLUBES</h1>
-      {/* Formulario para agregar club */}
-      <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-6">
-        {/* Cambiamos el campo de logo */}
-        <div className="col-span-2">
-          <label className="block mb-2 font-semibold" htmlFor="logo">
-            Logo del Club
-          </label>
-          <input
-            id="logo"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="block w-full text-sm text-gray-500
+    <div className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <div className="bg-white shadow-md rounded-md max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Registrar CLUBES
+        </h1>
+        {/* Formulario para agregar club */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {/* Cambiamos el campo de logo */}
+          <div className="col-span-1 sm:col-span-2">
+            <label className="block mb-2 font-semibold" htmlFor="logo">
+              Logo del Club
+            </label>
+            <input
+              id="logo"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-500
               file:mr-4 file:py-2 file:px-4
               file:rounded-md file:border-0
               file:text-sm file:font-semibold
               file:bg-blue-50 file:text-blue-700
               hover:file:bg-blue-100"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Formatos aceptados: JPEG, PNG, GIF, WEBP. Tamaño máximo: 2MB
-          </p>
-          {previewUrl && (
-            <div className="mt-4">
-              <p className="text-sm font-medium mb-2">Vista previa:</p>
-              <img
-                src={previewUrl}
-                alt="Vista previa del logo"
-                className="h-24 w-24 object-contain border rounded"
-              />
-            </div>
-          )}
-        </div>
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Formatos aceptados: JPEG, PNG, GIF, WEBP. Tamaño máximo: 2MB
+            </p>
+            {previewUrl && (
+              <div className="mt-4 ">
+                  <p className="text-sm font-medium mb-2">Vista previa:</p>
+                <img
+                  src={previewUrl}
+                  alt="Vista previa del logo"
+                  className="h-28 w-28 object-contain border rounded"
+                />
+              </div>
+            )}
+          </div>
 
-        <div>
-          <label className="block mb-2 font-semibold" htmlFor="nombre">
-            Nombre del club
-          </label>
-          <Input
-            id="nombre"
-            value={form.nombre}
-            required
-            onChange={handleChange}
-            name="nombre"
-            type="text"
-            placeholder="Nombre del club"
-          />
-        </div>
+          <div>
+            <label className="block mb-2 font-semibold" htmlFor="nombre">
+              Nombre del club
+            </label>
+            <Input
+              id="nombre"
+              value={form.nombre}
+              required
+              onChange={handleChange}
+              name="nombre"
+              type="text"
+              placeholder="Nombre del club"
+            />
+          </div>
 
-        <div>
-          <label className="block mb-2 font-semibold" htmlFor="fundacion">
-            Fecha Creacion
-          </label>
-          <Input
-            id="fundacion"
-            value={form.fundacion}
-            required
-            onChange={handleChange}
-            name="fundacion"
-            type="date"
-          />
-        </div>
+          <div>
+            <label className="block mb-2 font-semibold" htmlFor="fundacion">
+              Fecha Creacion
+            </label>
+            <Input
+              id="fundacion"
+              value={form.fundacion}
+              required
+              onChange={handleChange}
+              name="fundacion"
+              type="date"
+            />
+          </div>
 
-        <div>
-          <label className="block mb-2 font-semibold" htmlFor="direccion">
-            Dirección
-          </label>
-          <Input
-            id="direccion"
-            value={form.direccion}
-            required
-            onChange={handleChange}
-            name="direccion"
-            type="text"
-            placeholder="Dirección"
-          />
-        </div>
+          <div>
+            <label className="block mb-2 font-semibold" htmlFor="direccion">
+              Dirección
+            </label>
+            <Input
+              id="direccion"
+              value={form.direccion}
+              required
+              onChange={handleChange}
+              name="direccion"
+              type="text"
+              placeholder="Dirección"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="categoria" className="block mb-2 font-semibold">
-            Categoria:
-          </label>
-          <select
-            id="categoria"
-            name="categoria"
-            required
-            className="border p-2 rounded"
-            onChange={handleChange}
-            value={form.categoria}
-          >
-            <option value="">Seleccione Categoria</option>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
-            <option value="mixto">Mixto</option>
-          </select>
-        </div>
+          <div>
+            <label htmlFor="categoria" className="block mb-2 font-semibold">
+              Categoria:
+            </label>
+            <select
+              id="categoria"
+              name="categoria"
+              required
+              className="border p-2 rounded w-full"
+              onChange={handleChange}
+              value={form.categoria}
+            >
+              <option value="">Seleccione Categoria</option>
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
+              <option value="mixto">Mixto</option>
+            </select>
+          </div>
 
-        <div>
-          <label htmlFor="rama" className="block mb-2 font-semibold">
-            Rama:
-          </label>
-          <select
-            id="rama"
-            name="rama"
-            required
-            className="border p-2 rounded"
-            onChange={handleChange}
-            value={form.rama}
-          >
-            <option value="">Seleccione Rama</option>
-            <option value="sub-15">Sub-15</option>
-            <option value="sub-17">Sub-17</option>
-            <option value="sub-19">Sub-19</option>
-            <option value="infantil">Infantil</option>
-            <option value="juvenil">Juvenil</option>
-            <option value="mayores">Mayores</option>
-          </select>
-        </div>
+          <div>
+            <label htmlFor="rama" className="block mb-2 font-semibold">
+              Rama:
+            </label>
+            <select
+              id="rama"
+              name="rama"
+              required
+              className="border p-2 rounded w-full"
+              onChange={handleChange}
+              value={form.rama}
+            >
+              <option value="">Seleccione Rama</option>
+              <option value="sub-15">Sub-15</option>
+              <option value="sub-17">Sub-17</option>
+              <option value="sub-19">Sub-19</option>
+              <option value="infantil">Infantil</option>
+              <option value="juvenil">Juvenil</option>
+              <option value="mayores">Mayores</option>
+            </select>
+          </div>
 
-        <div>
-          <label className="block mb-2 font-semibold" htmlFor="telefono">
-            Teléfono
-          </label>
-          <Input
-            id="telefono"
-            value={form.telefono}
-            required
-            onChange={handleChange}
-            name="telefono"
-            type="text"
-            placeholder="Teléfono"
-          />
-        </div>
+          <div>
+            <label className="block mb-2 font-semibold" htmlFor="telefono">
+              Teléfono
+            </label>
+            <Input
+              id="telefono"
+              value={form.telefono}
+              required
+              onChange={handleChange}
+              name="telefono"
+              type="text"
+              placeholder="Teléfono"
+            />
+          </div>
 
-        <div>
-          <label className="block mb-2 font-semibold" htmlFor="email">
-            Email
-          </label>
-          <Input
-            id="email"
-            value={form.email}
-            required
-            onChange={handleChange}
-            name="email"
-            type="email"
-            placeholder="Email"
-          />
-        </div>
+          <div>
+            <label className="block mb-2 font-semibold" htmlFor="email">
+              Email
+            </label>
+            <Input
+              id="email"
+              value={form.email}
+              required
+              onChange={handleChange}
+              name="email"
+              type="email"
+              placeholder="Email"
+            />
+          </div>
 
-        <div className="col-span-4">
-          <label
-            htmlFor="id_usuario_responsable"
-            className="block mb-2 font-semibold"
-          >
-            Seleccionar Tecnico:
-          </label>
-          <select
-            id="id_usuario_responsable"
-            name="id_usuario_responsable"
-            onChange={handleChange}
-            value={form.id_usuario_responsable}
-            className="border border-gray-300 p-2 rounded w-full"
-            required
-          >
-            <option value="">Seleccione usuario responsable</option>
-            {persona
-              .filter(
-                (usuario) =>
-                  usuario.role.name === "DIRECTOR_TECNICO" ||
-                  usuario.role.name === "PRESIDENTE_CLUB"
-              )
-              .map((usuario) => (
-                <option key={usuario.id} value={usuario.id}>
-                  {usuario.username} - {usuario.role.name}
-                </option>
-              ))}
-          </select>
-        </div>
+          <div className="col-span-1 sm:col-span-2 lg:col-span-4">
+            <label
+              htmlFor="id_usuario_responsable"
+              className="block mb-2 font-semibold"
+            >
+              Seleccionar Tecnico:
+            </label>
+            <select
+              id="id_usuario_responsable"
+              name="id_usuario_responsable"
+              onChange={handleChange}
+              value={form.id_usuario_responsable}
+              className="border border-gray-300 p-2 rounded w-full"
+              required
+            >
+              <option value="">Seleccione usuario responsable</option>
+              {persona
+                .filter(
+                  (usuario) =>
+                    usuario.role.name === "DIRECTOR_TECNICO" ||
+                    usuario.role.name === "PRESIDENTE_CLUB"
+                )
+                .map((usuario) => (
+                  <option key={usuario.id} value={usuario.id}>
+                    {usuario.username} - {usuario.role.name}
+                  </option>
+                ))}
+            </select>
+          </div>
 
-        <div className="col-span-4 flex justify-center">
-          <Button
-            type="submit"
-            className="bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-300 "
-          >
-            guardar club
-          </Button>
-        </div>
-      </form>
+          <div className="col-span-1 sm:col-span-2 lg:col-span-4 flex justify-center mt-6">
+            <Button
+              type="submit"
+              className="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition duration-300"
+            >
+              guardar club
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

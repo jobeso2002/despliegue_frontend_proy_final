@@ -255,286 +255,300 @@ function RegDeportista() {
   );
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">
-        Registrar Deportista
-      </h1>
-      <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-6">
-        {/* Cambiamos el campo de foto */}
+    <div className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <div className="bg-white shadow-md rounded-md max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Registrar Deportista
+        </h1>
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+        >
+          {/* Foto */}
+          <FileInput name="fotoFile" label="Foto:" required isImage />
 
-        {/* Foto */}
-        <FileInput name="fotoFile" label="Foto:" required isImage />
-
-        {/* Documentos */}
-        <FileInput
-          name="documentoIdentidadFile"
-          label="Documento de Identidad (PDF):"
-          required
-        />
-
-        <FileInput name="registroCivilFile" label="Registro Civil (PDF):" />
-
-        <FileInput name="afiliacionFile" label="Afiliación (PDF):" />
-
-        <FileInput name="certificadoEpsFile" label="Certificado EPS (PDF):" />
-
-        <FileInput
-          name="permisoResponsableFile"
-          label="Permiso del Responsable (PDF):"
-        />
-
-        <div>
-          <Label htmlFor="tipoDocumento" className="block mb-2 font-semibold">
-            Tipo de Documento:
-          </Label>
-          <select
-            id="tipoDocumento"
-            name="tipoDocumento"
+          {/* Documentos */}
+          <FileInput
+            name="documentoIdentidadFile"
+            label="Documento de Identidad (PDF):"
             required
-            className="border p-2 rounded"
-            value={form.tipoDocumento}
-            onChange={handleChange}
-          >
-            <option value="">Tipo de Documento</option>
-            <option value="tarjeta_identidad">Tarjeta Identidad</option>
-            <option value="cedula">Cedula Ciudadania</option>
-            <option value="pasaporte">Cedula Extranjera</option>
-          </select>
-        </div>
-
-        <div>
-          <label
-            htmlFor="documentoIdentidad"
-            className="block mb-2 font-semibold"
-          >
-            Número Documento:
-          </label>
-          <input
-            id="documentoIdentidad"
-            type="text"
-            name="documentoIdentidad"
-            placeholder="Número de Documento"
-            required
-            className="border border-gray-300 p-2 rounded w-full"
-            value={form.documentoIdentidad}
-            onChange={handleChange}
           />
-        </div>
 
-        <div className="flex flex-col">
-          <Label htmlFor="fechaNacimiento" className="text-black text-sm">
-            Fecha Nacimiento:
-          </Label>
-          <Input
-            id="fechaNacimiento"
-            type="date"
-            name="fechaNacimiento"
-            placeholder="Fecha Nacimiento"
-            required
-            className="border p-2 rounded"
-            value={form.fechaNacimiento}
-            onChange={handleChange}
+          <FileInput name="registroCivilFile" label="Registro Civil (PDF):" />
+
+          <FileInput name="afiliacionFile" label="Afiliación (PDF):" />
+
+          <FileInput name="certificadoEpsFile" label="Certificado EPS (PDF):" />
+
+          <FileInput
+            name="permisoResponsableFile"
+            label="Permiso del Responsable (PDF):"
           />
-        </div>
 
-        <div>
-          <label htmlFor="primer_nombre" className="block mb-2 font-semibold">
-            Primer Nombre:
-          </label>
-          <input
-            id="primer_nombre"
-            type="text"
-            name="primer_nombre"
-            placeholder="Primer Nombre"
-            required
-            className="border border-gray-300 p-2 rounded w-full"
-            value={form.primer_nombre}
-            onChange={handleChange}
-          />
-        </div>
+          <div>
+            <Label htmlFor="tipoDocumento" className="block mb-2 font-semibold">
+              Tipo de Documento:
+            </Label>
+            <select
+              id="tipoDocumento"
+              name="tipoDocumento"
+              required
+              className="border p-2 rounded"
+              value={form.tipoDocumento}
+              onChange={handleChange}
+            >
+              <option value="">Tipo de Documento</option>
+              <option value="tarjeta_identidad">Tarjeta Identidad</option>
+              <option value="cedula">Cedula Ciudadania</option>
+              <option value="pasaporte">Cedula Extranjera</option>
+            </select>
+          </div>
 
-        <div>
-          <label htmlFor="segundo_nombre" className="block mb-2 font-semibold">
-            Segundo Nombre:
-          </label>
-          <input
-            id="segundo_nombre"
-            type="text"
-            name="segundo_nombre"
-            placeholder="Segundo Nombre"
-            required
-            className="border border-gray-300 p-2 rounded w-full"
-            value={form.segundo_nombre}
-            onChange={handleChange}
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="documentoIdentidad"
+              className="block mb-2 font-semibold"
+            >
+              Número Documento:
+            </label>
+            <input
+              id="documentoIdentidad"
+              type="text"
+              name="documentoIdentidad"
+              placeholder="Número de Documento"
+              required
+              className="border border-gray-300 p-2 rounded w-full"
+              value={form.documentoIdentidad}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="primer_apellido" className="block mb-2 font-semibold">
-            Primer Apellido:
-          </label>
-          <input
-            id="primer_apellido"
-            type="text"
-            name="primer_apellido"
-            placeholder="Primer Apellido"
-            required
-            className="border border-gray-300 p-2 rounded w-full"
-            value={form.primer_apellido}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="flex flex-col">
+            <Label htmlFor="fechaNacimiento" className="text-black text-sm">
+              Fecha Nacimiento:
+            </Label>
+            <Input
+              id="fechaNacimiento"
+              type="date"
+              name="fechaNacimiento"
+              placeholder="Fecha Nacimiento"
+              required
+              className="border p-2 rounded"
+              value={form.fechaNacimiento}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="segundo_apellido"
-            className="block mb-2 font-semibold"
-          >
-            Segundo Apellido:
-          </label>
-          <input
-            id="segundo_apellido"
-            type="text"
-            name="segundo_apellido"
-            placeholder="Segundo Apellido"
-            required
-            className="border border-gray-300 p-2 rounded w-full"
-            value={form.segundo_apellido}
-            onChange={handleChange}
-          />
-        </div>
+          <div>
+            <label htmlFor="primer_nombre" className="block mb-2 font-semibold">
+              Primer Nombre:
+            </label>
+            <input
+              id="primer_nombre"
+              type="text"
+              name="primer_nombre"
+              placeholder="Primer Nombre"
+              required
+              className="border border-gray-300 p-2 rounded w-full"
+              value={form.primer_nombre}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="telefono" className="block mb-2 font-semibold">
-            Telefono:
-          </label>
-          <input
-            id="telefono"
-            type="text"
-            name="telefono"
-            placeholder="Telefono"
-            required
-            value={form.telefono}
-            onChange={handleChange}
-            className="border border-gray-300 p-2 rounded w-full"
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="segundo_nombre"
+              className="block mb-2 font-semibold"
+            >
+              Segundo Nombre:
+            </label>
+            <input
+              id="segundo_nombre"
+              type="text"
+              name="segundo_nombre"
+              placeholder="Segundo Nombre"
+              required
+              className="border border-gray-300 p-2 rounded w-full"
+              value={form.segundo_nombre}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="posicion" className="block mb-2 font-semibold">
-            Posición:
-          </label>
-          <select
-            id="posicion"
-            name="posicion"
-            required
-            className="border p-2 rounded"
-            value={form.posicion}
-            onChange={handleChange}
-          >
-            <option value="">Seleccione posición</option>
-            <option value="armador">armador</option>
-            <option value="central">central</option>
-            <option value="punta">punta</option>
-            <option value="libero">libero</option>
-            <option value="opuesto">opuesto</option>
-          </select>
-        </div>
+          <div>
+            <label
+              htmlFor="primer_apellido"
+              className="block mb-2 font-semibold"
+            >
+              Primer Apellido:
+            </label>
+            <input
+              id="primer_apellido"
+              type="text"
+              name="primer_apellido"
+              placeholder="Primer Apellido"
+              required
+              className="border border-gray-300 p-2 rounded w-full"
+              value={form.primer_apellido}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="numero_camiseta" className="block mb-2 font-semibold">
-            Número de Camiseta:
-          </label>
-          <input
-            id="numero_camiseta"
-            type="number"
-            name="numero_camiseta"
-            placeholder="Número de Camiseta"
-            required
-            value={form.numero_camiseta || ""}
-            onChange={handleChange}
-            className="border border-gray-300 p-2 rounded w-full"
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="segundo_apellido"
+              className="block mb-2 font-semibold"
+            >
+              Segundo Apellido:
+            </label>
+            <input
+              id="segundo_apellido"
+              type="text"
+              name="segundo_apellido"
+              placeholder="Segundo Apellido"
+              required
+              className="border border-gray-300 p-2 rounded w-full"
+              value={form.segundo_apellido}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="direccion" className="block mb-2 font-semibold">
-            Direccion:
-          </label>
-          <input
-            id="direccion"
-            type="text"
-            name="direccion"
-            placeholder="Direccion"
-            required
-            value={form.direccion}
-            onChange={handleChange}
-            className="border border-gray-300 p-2 rounded w-full"
-          />
-        </div>
+          <div>
+            <label htmlFor="telefono" className="block mb-2 font-semibold">
+              Telefono:
+            </label>
+            <input
+              id="telefono"
+              type="text"
+              name="telefono"
+              placeholder="Telefono"
+              required
+              value={form.telefono}
+              onChange={handleChange}
+              className="border border-gray-300 p-2 rounded w-full"
+            />
+          </div>
 
-        <div>
-          <Label htmlFor="genero" className="block mb-2 font-semibold">
-            Genero:
-          </Label>
-          <select
-            id="genero"
-            name="genero"
-            required
-            className="border p-2 rounded"
-            value={form.genero}
-            onChange={handleChange}
-          >
-            <option value="">Seleccione genero</option>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
+          <div>
+            <label htmlFor="posicion" className="block mb-2 font-semibold">
+              Posición:
+            </label>
+            <select
+              id="posicion"
+              name="posicion"
+              required
+              className="border p-2 rounded"
+              value={form.posicion}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione posición</option>
+              <option value="armador">armador</option>
+              <option value="central">central</option>
+              <option value="punta">punta</option>
+              <option value="libero">libero</option>
+              <option value="opuesto">opuesto</option>
+            </select>
+          </div>
 
-        <div>
-          <Label htmlFor="tipo_sangre" className="block mb-2 font-semibold">
-            Tipo Sangre:
-          </Label>
-          <select
-            id="tipo_sangre"
-            name="tipo_sangre"
-            required
-            className="border p-2 rounded"
-            value={form.tipo_sangre}
-            onChange={handleChange}
-          >
-            <option value="">Seleccione tipo de sangre</option>
-            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((tipo) => (
-              <option key={tipo} value={tipo}>
-                {tipo}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div>
+            <label
+              htmlFor="numero_camiseta"
+              className="block mb-2 font-semibold"
+            >
+              Número de Camiseta:
+            </label>
+            <input
+              id="numero_camiseta"
+              type="number"
+              name="numero_camiseta"
+              placeholder="Número de Camiseta"
+              required
+              value={form.numero_camiseta || ""}
+              onChange={handleChange}
+              className="border border-gray-300 p-2 rounded w-full"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="email" className="block mb-2 font-semibold">
-            Correo Electrónico:
-          </label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Correo Electrónico"
-            required
-            className="border border-gray-300 p-2 rounded w-full"
-            value={form.email}
-            onChange={handleChange}
-          />
-        </div>
+          <div>
+            <label htmlFor="direccion" className="block mb-2 font-semibold">
+              Direccion:
+            </label>
+            <input
+              id="direccion"
+              type="text"
+              name="direccion"
+              placeholder="Direccion"
+              required
+              value={form.direccion}
+              onChange={handleChange}
+              className="border border-gray-300 p-2 rounded w-full"
+            />
+          </div>
 
-        <div className="col-span-4 flex justify-center">
-          <Button className="bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-300">
-            Guardar
-          </Button>
-        </div>
-      </form>
+          <div>
+            <Label htmlFor="genero" className="block mb-2 font-semibold">
+              Genero:
+            </Label>
+            <select
+              id="genero"
+              name="genero"
+              required
+              className="border p-2 rounded"
+              value={form.genero}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione genero</option>
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+
+          <div>
+            <Label htmlFor="tipo_sangre" className="block mb-2 font-semibold">
+              Tipo Sangre:
+            </Label>
+            <select
+              id="tipo_sangre"
+              name="tipo_sangre"
+              required
+              className="border p-2 rounded"
+              value={form.tipo_sangre}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione tipo de sangre</option>
+              {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
+                (tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block mb-2 font-semibold">
+              Correo Electrónico:
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Correo Electrónico"
+              required
+              className="border border-gray-300 p-2 rounded w-full"
+              value={form.email}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-span-1 sm:col-span-2 lg:col-span-4 flex justify-center mt-6">
+            <Button className="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition duration-300">
+              Guardar
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

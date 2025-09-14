@@ -262,16 +262,16 @@ function ListaDeportista() {
   ];
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md max-w-5xl mx-auto">
+    <div className="p-4 sm:p-6 bg-white shadow-md rounded-md max-w-full md:max-w-5xl mx-auto overflow-x-hidden">
       {error && (
         <div className="bg-red-100 text-red-700 p-4 rounded mb-4">{error}</div>
       )}
 
-      <h1 className="text-2xl font-bold mb-6 text-center">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
         Listado de Deportistas
       </h1>
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-between items-stretch sm:items-center mb-4">
         <Input
           type="text"
           placeholder="Buscar por identificacion o apellido"
@@ -280,10 +280,10 @@ function ListaDeportista() {
             setSearchTerm(e.target.value);
             setCurrentPage(1); // Resetear a la primera página al buscar
           }}
-          className="p-2 border border-gray-300 rounded w-64"
+          className="p-2 border border-gray-300 rounded w-full sm:w-64"
         />
         <Button
-          className="bg-blue-600 hover:bg-blue-700 self-end md:self-auto"
+          className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
           onClick={handleExportExcel}
         >
           Exportar a Excel
@@ -296,8 +296,8 @@ function ListaDeportista() {
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto mb-4">
-            <table className="table-auto w-full border border-gray-300 text-sm">
+          <div className="overflow-x-auto mb-4 -mx-2 sm:mx-0">
+            <table className="min-w-full border border-gray-300 text-xs sm:text-sm">
               <thead className="bg-gray-200">
                 <tr>
                   {headers.map((header) => (
@@ -360,7 +360,7 @@ function ListaDeportista() {
                     </td>
                     <td className="border  px-3 py-2">{deportista.email}</td>
                     <td className="border px-3 py-2">
-                      <div className="flex flex-wrap gap-2 justify-center">
+                      <div className="flex flex-col sm:flex-wrap gap-2 justify-center items-stretch sm:items-center">
                         <Link
                           to={`/dashboard/editar-deportista/${deportista.id}`}
                           className="inline-flex items-center px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm transition-colors"
@@ -422,17 +422,17 @@ function ListaDeportista() {
           </div>
 
           {/* Componente de paginación */}
-          <div className="flex justify-between items-center mt-4">
-            <div className="text-sm text-gray-600">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mt-4">
+            <div className="text-xs sm:text-sm text-gray-600 text-center sm:text-left">
               Mostrando {indexOfFirstItem + 1}-
               {Math.min(indexOfLastItem, filteredUsers.length)} de{" "}
               {filteredUsers.length} deportistas
             </div>
-            <div className="flex space-x-1">
+            <div className="flex flex-wrap justify-center sm:justify-end gap-1">
               <Button
                 onClick={() => paginate(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 rounded disabled:opacity-50"
+                className="px-3 py-1 rounded disabled:opacity-50 bg-green-700 text-white hover:bg-green-800"
                 size="sm"
               >
                 Anterior
@@ -445,8 +445,8 @@ function ListaDeportista() {
                     onClick={() => paginate(number)}
                     className={`px-3 py-1 rounded ${
                       currentPage === number
-                        ? "bg-blue-600 text-black"
-                        : "bg-gray-400"
+                        ? "bg-green-600 text-white hover:bg-green-800"
+                        : "bg-green-300 text-white hover:bg-green-800"
                     }`}
                     size="sm"
                   >
@@ -458,7 +458,7 @@ function ListaDeportista() {
               <Button
                 onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 rounded disabled:opacity-50"
+                className="px-3 py-1 rounded disabled:opacity-50 bg-green-700 text-white hover:bg-green-800"
                 size="sm"
               >
                 Siguiente

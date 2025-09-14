@@ -24,42 +24,79 @@ function Dashboard() {
     <div className="flex min-h-screen flex-col">
       {/* Encabezado */}
       <header className="flex items-center justify-between bg-green-700 text-white px-4 py-3">
-        <h1 className="text-lg font-bold">
+        <h1 className="text-sm md:text-lg font-bold truncate max-w-[250px] md:max-w-none">
           Sistema Integral De Gestion Administrativa Y Deportiva
         </h1>
 
-        <div className="relative">
+        <div className="flex items-center gap-2">
           <button
-            className="flex items-center focus:outline-none"
+            className="md:hidden p-2 rounded bg-green-800 hover:bg-green-900"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="24"
+              className="h-5 w-5"
+              fill="none"
               viewBox="0 0 24 24"
-              width="24"
+              stroke="currentColor"
             >
-              <path d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
 
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-              <button
-                onClick={handleLogout}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+          {/* Menú usuario */}
+          <div className="relative hidden md:block">
+            <button
+              className="flex items-center focus:outline-none"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                width="24"
+                viewBox="0 0 24 24"
               >
-                Cerrar sesión
-              </button>
-            </div>
-          )}
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 
+              3c1.66 0 3 1.34 3 3s-1.34 
+              3-3 3-3-1.34-3-3 1.34-3 
+              3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 
+              4-3.08 6-3.08 1.99 0 5.97 
+              1.09 6 3.08-1.29 1.94-3.5 
+              3.22-6 3.22z"
+                />
+              </svg>
+            </button>
+
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                <button
+                  onClick={handleLogout}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
       <div className="flex flex-grow">
         {/* Menú lateral */}
-        <aside className="w-64 bg-green-700 text-white flex flex-col">
+        <aside
+          className={`
+      fixed inset-y-0 left-0 z-20 w-64 transform bg-green-700 text-white flex flex-col transition-transform duration-200 
+      ${menuOpen ? "translate-x-0" : "-translate-x-full"} 
+      md:translate-x-0 md:relative
+    `}
+        >
           <div className="p-4 flex flex-col items-center">
             <div className="rounded-full overflow-hidden w-50 h-150">
               <img
@@ -68,13 +105,13 @@ function Dashboard() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <h6 className="mt-4 text-lg font-bold">
+            <h6 className="mt-4 text-base font-bold truncate max-w-[200px]">
               {user?.username ? user.username.toUpperCase() : "CARGANDO..."}
             </h6>
           </div>
 
-          <nav className="flex-grow">
-            <ul className="space-y-2 px-4">
+          <nav className="flex-grow overflow-y-auto">
+            <ul className="space-y-2 px-4 text-sm md:text-base">
               <li>
                 <Link
                   to="/dashboard"
@@ -227,7 +264,17 @@ function Dashboard() {
             </ul>
           </nav>
 
-          <footer className="text-center py-4 bg-green-700 text-sm">
+          {/* Cerrar sesión SOLO en móvil */}
+          <div className="block md:hidden px-4 pb-4">
+            <button
+              onClick={handleLogout}
+              className="w-full py-2 px-3 rounded bg-red-600 hover:bg-red-700 text-white text-sm"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+
+          <footer className="text-center py-4 bg-green-700 text-xs md:text-sm">
             &copy; {new Date().getFullYear()} - Liga de voleibol
           </footer>
         </aside>
