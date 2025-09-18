@@ -49,9 +49,35 @@ function ListaDeportista() {
     setShowClubModal(true);
   };
 
+  // Función para obtener el club actual del deportista
+const obtenerClubActualDeportista = async (deportistaId: number): Promise<number | null> => {
+  try {
+    const response = await Api.get(`/deportista/${deportistaId}/clubs`);
+    const clubs = response.data;
+    
+    // Buscar el club activo
+    const clubActivo = clubs.find((club: any) => 
+      club.estado === 'activo' && club.club && club.club.id
+    );
+    
+    return clubActivo ? clubActivo.club.id : null;
+  } catch (error) {
+    console.error("Error al obtener club del deportista:", error);
+    return null;
+  }
+};
+
   const handleOpenTransferModal = async (deportista: Deportista) => {
     await ConsultarClub();
+    // Obtener el club actual del deportista
+  const clubOrigenId = await obtenerClubActualDeportista(deportista.id);
+  
+  if (!clubOrigenId) {
+      toast.warning("Este deportista no está asignado a ningún club. Debe asignarlo primero a un club antes de transferirlo.");
+    return;
+  }
     setSelectedDeportista(deportista);
+    setClubOrigenId(clubOrigenId);// Establecer el club de origen automáticamente
     setShowTransferModal(true);
   };
 
@@ -538,22 +564,36 @@ function ListaDeportista() {
             </h2>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Club de Origen
-              </label>
-              <select
-                className="w-full p-2 border border-gray-300 rounded-md"
-                value={clubOrigenId}
-                onChange={(e) => setClubOrigenId(Number(e.target.value))}
-              >
-                <option value={0}>Seleccione club de origen</option>
-                {club.map((cl) => (
-                  <option key={cl.id} value={cl.id}>
-                    {cl.nombre} ({cl.categoria} - {cl.rama})
-                  </option>
-                ))}
-              </select>
-            </div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Club de Origen
+        </label>
+        {clubOrigenId ? (
+          <input
+            type="text"
+            className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+            value={club.find(c => c.id === clubOrigenId)?.nombre || "Club no encontrado"}
+            readOnly
+          />
+        ) : (
+          <select
+            className="w-full p-2 border border-gray-300 rounded-md"
+            value={clubOrigenId}
+            onChange={(e) => setClubOrigenId(Number(e.target.value))}
+          >
+            <option value={0}>Seleccione club de origen</option>
+            {club.map((cl) => (
+              <option key={cl.id} value={cl.id}>
+                {cl.nombre} ({cl.categoria} - {cl.rama})
+              </option>
+            ))}
+          </select>
+        )}
+        {!clubOrigenId && (
+          <p className="text-xs text-yellow-600 mt-1">
+            Este deportista no tiene club actual. Seleccione un club de origen.
+          </p>
+        )}
+      </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
