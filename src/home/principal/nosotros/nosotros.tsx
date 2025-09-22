@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import fondopersona from "@/assets/fondoperso.jpg";
+import marta from "@/assets/martaligavoleivolpresidente.png";
+import fernando from "@/assets/fer1.png";
 import deporte from "@/assets/iniciocarusel/Quienessomos.png";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -129,65 +130,35 @@ function Nosotros() {
 
       <div>
         <Card>
-  <CardHeader>
-    <CardTitle className="text-center text-2xl font-bold text-green-700">
-      COMITÉ EJECUTIVO
-    </CardTitle>
-    <CardContent>
-      <div className="flex gap-6 overflow-x-auto sm:overflow-visible sm:flex-wrap justify-start sm:justify-center px-2">
-        <div className="flex-shrink-0 text-center">
-          <img
-            src={fondopersona}
-            alt="Integrante 1"
-            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full mx-auto"
-          />
-          <p className="mt-2 text-sm sm:text-base">nestor usiche</p>
-          <p className="text-xs sm:text-sm">PRESIDENTE</p>
-        </div>
+          <CardHeader>
+            <CardTitle className="text-center text-2xl font-bold text-green-700">
+              COMITÉ EJECUTIVO
+            </CardTitle>
+            <CardContent>
+              <div className="flex gap-6 overflow-x-auto sm:overflow-visible sm:flex-wrap justify-start sm:justify-center px-2">
+                <div className="flex-shrink-0 text-center">
+                  <img
+                    src={fernando}
+                    alt="Fernando Lopez"
+                    className="w-24 h-24 sm:w-32 sm:h-32  rounded-full mx-auto"
+                  />
+                  <p className="mt-2 text-sm sm:text-base">Fernando Lopez</p>
+                  <p className="text-xs sm:text-sm">PRESIDENTE</p>
+                </div>
 
-        <div className="flex-shrink-0 text-center">
-          <img
-            src={fondopersona}
-            alt="Integrante 2"
-            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full mx-auto"
-          />
-          <p className="mt-2 text-sm sm:text-base">Señora Marta</p>
-          <p className="text-xs sm:text-sm">VICEPRESIDENTE</p>
-        </div>
-
-        <div className="flex-shrink-0 text-center">
-          <img
-            src={fondopersona}
-            alt="Integrante 3"
-            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full mx-auto"
-          />
-          <p className="mt-2 text-sm sm:text-base">Señora Marta</p>
-          <p className="text-xs sm:text-sm">TECNICO</p>
-        </div>
-
-        <div className="flex-shrink-0 text-center">
-          <img
-            src={fondopersona}
-            alt="Integrante 4"
-            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full mx-auto"
-          />
-          <p className="mt-2 text-sm sm:text-base">Señora Marta</p>
-          <p className="text-xs sm:text-sm">SECRETARIA</p>
-        </div>
-
-        <div className="flex-shrink-0 text-center">
-          <img
-            src={fondopersona}
-            alt="Integrante 5"
-            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full mx-auto"
-          />
-          <p className="mt-2 text-sm sm:text-base">Señora Marta</p>
-          <p className="text-xs sm:text-sm">VOCERO</p>
-        </div>
-      </div>
-    </CardContent>
-  </CardHeader>
-</Card>
+                <div className="flex-shrink-0 text-center">
+                  <img
+                    src={marta}
+                    alt="Marta"
+                    className="w-24 h-24 sm:w-32 sm:h-32  rounded-full mx-auto"
+                  />
+                  <p className="mt-2 text-sm sm:text-base">Marta Solano</p>
+                  <p className="text-xs sm:text-sm">VICEPRESIDENTE</p>
+                </div>
+              </div>
+            </CardContent>
+          </CardHeader>
+        </Card>
       </div>
 
       <div>
