@@ -1,5 +1,6 @@
 import { Partido } from "@/interface/partido/partido.interface";
 import { PartidoCard } from "./partidocard";
+import { useState, useMemo } from "react";
 
 interface PartidoListProps {
   activeTab: "programados" | "en_juego" | "finalizados" | "cancelados";
@@ -13,9 +14,11 @@ interface PartidoListProps {
   onRegistrarResultado: (id: number) => void;
   onCancelarPartido: (id: number, motivo: string) => void;
   onCambiarEstado: (id: number) => void;
-  eventoFiltro?: number; // Nuevo prop para filtrar por evento
-  ubicacionFiltro?: string; // Nuevo prop para filtrar por ubicación
+  eventoFiltro?: number;
+  ubicacionFiltro?: string;
 }
+
+const ITEMS_PER_PAGE = 3;
 
 export const PartidoList = ({
   activeTab,
@@ -30,6 +33,13 @@ export const PartidoList = ({
   eventoFiltro,
   ubicacionFiltro,
 }: PartidoListProps) => {
+  const [currentPages, setCurrentPages] = useState({
+    programados: 1,
+    en_juego: 1,
+    finalizados: 1,
+    cancelados: 1,
+  });
+
   const filtrarPartidos = (partidos: Partido[]) => {
     return partidos.filter((partido) => {
       const cumpleEvento = eventoFiltro
@@ -48,21 +58,129 @@ export const PartidoList = ({
   };
 
   // Aplicar filtros a cada categoría
-  const partidosProgramados = filtrarPartidos(
-    partidos.filter((p) => p.estado === "programado")
+  const partidosProgramados = useMemo(
+    () => filtrarPartidos(partidos.filter((p) => p.estado === "programado")),
+    [partidos, eventoFiltro, ubicacionFiltro]
   );
 
-  const partidosEnJuego = filtrarPartidos(
-    partidos.filter((p) => p.estado === "en_juego")
+  const partidosEnJuego = useMemo(
+    () => filtrarPartidos(partidos.filter((p) => p.estado === "en_juego")),
+    [partidos, eventoFiltro, ubicacionFiltro]
   );
 
-  const partidosFinalizados = filtrarPartidos(
-    partidos.filter((p) => p.estado === "finalizado")
+  const partidosFinalizados = useMemo(
+    () => filtrarPartidos(partidos.filter((p) => p.estado === "finalizado")),
+    [partidos, eventoFiltro, ubicacionFiltro]
   );
 
-  const partidosCancelados = filtrarPartidos(
-    partidos.filter((p) => p.estado === "cancelado")
+  const partidosCancelados = useMemo(
+    () => filtrarPartidos(partidos.filter((p) => p.estado === "cancelado")),
+    [partidos, eventoFiltro, ubicacionFiltro]
   );
+
+  // Obtener partidos paginados según la pestaña activa
+  const getPartidosPaginados = () => {
+    let partidosFiltrados: Partido[] = [];
+
+    switch (activeTab) {
+      case "programados":
+        partidosFiltrados = partidosProgramados;
+        break;
+      case "en_juego":
+        partidosFiltrados = partidosEnJuego;
+        break;
+      case "finalizados":
+        partidosFiltrados = partidosFinalizados;
+        break;
+      case "cancelados":
+        partidosFiltrados = partidosCancelados;
+        break;
+    }
+
+    const startIndex = (currentPages[activeTab] - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    return partidosFiltrados.slice(startIndex, endIndex);
+  };
+
+  // Obtener total de páginas según la pestaña activa
+  const getTotalPaginas = () => {
+    let totalPartidos = 0;
+
+    switch (activeTab) {
+      case "programados":
+        totalPartidos = partidosProgramados.length;
+        break;
+      case "en_juego":
+        totalPartidos = partidosEnJuego.length;
+        break;
+      case "finalizados":
+        totalPartidos = partidosFinalizados.length;
+        break;
+      case "cancelados":
+        totalPartidos = partidosCancelados.length;
+        break;
+    }
+
+    return Math.ceil(totalPartidos / ITEMS_PER_PAGE);
+  };
+
+  // Cambiar página
+  const cambiarPagina = (nuevaPagina: number) => {
+    setCurrentPages((prev) => ({
+      ...prev,
+      [activeTab]: nuevaPagina,
+    }));
+  };
+
+  // Resetear paginación cuando cambia la pestaña
+  const handleTabChange = (
+    tab: "programados" | "en_juego" | "finalizados" | "cancelados"
+  ) => {
+    setActiveTab(tab);
+    // No es necesario resetear la página aquí porque cada tab mantiene su propia página
+  };
+
+  const partidosPaginados = getPartidosPaginados();
+  const totalPaginas = getTotalPaginas();
+  const paginaActual = currentPages[activeTab];
+
+  // Componente de paginación
+  const Paginacion = () => {
+    if (totalPaginas <= 1) return null;
+
+    return (
+      <div className="flex justify-center items-center mt-6 space-x-2">
+        <button
+          onClick={() => cambiarPagina(paginaActual - 1)}
+          disabled={paginaActual === 1}
+          className={`px-3 py-1 rounded ${
+            paginaActual === 1
+              ? "bg-green-600 text-white hover:bg-green-800"
+              : "bg-green-500 text-white hover:bg-green-800"
+          }`}
+        >
+          Anterior
+        </button>
+
+        <span className="text-sm text-gray-600">
+          Página {paginaActual} de {totalPaginas}
+        </span>
+
+        <button
+          onClick={() => cambiarPagina(paginaActual + 1)}
+          disabled={paginaActual === totalPaginas}
+          className={`px-3 py-1 rounded ${
+            paginaActual === totalPaginas
+              ? "bg-green-600 text-white hover:bg-green-800"
+              : "bg-green-500 text-white hover:bg-green-800"
+          }`}
+        >
+          Siguiente
+        </button>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -81,7 +199,7 @@ export const PartidoList = ({
               ? "border-b-2 border-blue-500 text-blue-600"
               : "text-gray-500"
           }`}
-          onClick={() => setActiveTab("programados")}
+          onClick={() => handleTabChange("programados")}
         >
           Programados ({partidosProgramados.length})
         </button>
@@ -91,7 +209,7 @@ export const PartidoList = ({
               ? "border-b-2 border-blue-500 text-blue-600"
               : "text-gray-500"
           }`}
-          onClick={() => setActiveTab("en_juego")}
+          onClick={() => handleTabChange("en_juego")}
         >
           En Juego ({partidosEnJuego.length})
         </button>
@@ -101,7 +219,7 @@ export const PartidoList = ({
               ? "border-b-2 border-blue-500 text-blue-600"
               : "text-gray-500"
           }`}
-          onClick={() => setActiveTab("finalizados")}
+          onClick={() => handleTabChange("finalizados")}
         >
           Finalizados ({partidosFinalizados.length})
         </button>
@@ -111,7 +229,7 @@ export const PartidoList = ({
               ? "border-b-2 border-blue-500 text-blue-600"
               : "text-gray-500"
           }`}
-          onClick={() => setActiveTab("cancelados")}
+          onClick={() => handleTabChange("cancelados")}
         >
           Cancelados ({partidosCancelados.length})
         </button>
@@ -124,16 +242,19 @@ export const PartidoList = ({
           {partidosProgramados.length === 0 ? (
             <p className="text-gray-500">No hay partidos programados.</p>
           ) : (
-            partidosProgramados.map((partido) => (
-              <PartidoCard
-                key={partido.id}
-                partido={partido}
-                tipo="programado"
-                onEditarPartido={onEditarPartido}
-                onCancelarPartido={onCancelarPartido}
-                onCambiarEstado={onCambiarEstado}
-              />
-            ))
+            <>
+              {partidosPaginados.map((partido) => (
+                <PartidoCard
+                  key={partido.id}
+                  partido={partido}
+                  tipo="programado"
+                  onEditarPartido={onEditarPartido}
+                  onCancelarPartido={onCancelarPartido}
+                  onCambiarEstado={onCambiarEstado}
+                />
+              ))}
+              <Paginacion />
+            </>
           )}
         </div>
       )}
@@ -143,16 +264,19 @@ export const PartidoList = ({
           {partidosEnJuego.length === 0 ? (
             <p className="text-gray-500">No hay partidos en juego.</p>
           ) : (
-            partidosEnJuego.map((partido) => (
-              <PartidoCard
-                key={partido.id}
-                partido={partido}
-                tipo="en_juego"
-                onRegistrarResultado={onRegistrarResultado}
-                onCancelarPartido={onCancelarPartido}
-                onCambiarEstado={onCambiarEstado}
-              />
-            ))
+            <>
+              {partidosPaginados.map((partido) => (
+                <PartidoCard
+                  key={partido.id}
+                  partido={partido}
+                  tipo="en_juego"
+                  onRegistrarResultado={onRegistrarResultado}
+                  onCancelarPartido={onCancelarPartido}
+                  onCambiarEstado={onCambiarEstado}
+                />
+              ))}
+              <Paginacion />
+            </>
           )}
         </div>
       )}
@@ -162,13 +286,16 @@ export const PartidoList = ({
           {partidosFinalizados.length === 0 ? (
             <p className="text-gray-500">No hay partidos finalizados.</p>
           ) : (
-            partidosFinalizados.map((partido) => (
-              <PartidoCard
-                key={partido.id}
-                partido={partido}
-                tipo="finalizado"
-              />
-            ))
+            <>
+              {partidosPaginados.map((partido) => (
+                <PartidoCard
+                  key={partido.id}
+                  partido={partido}
+                  tipo="finalizado"
+                />
+              ))}
+              <Paginacion />
+            </>
           )}
         </div>
       )}
@@ -178,13 +305,16 @@ export const PartidoList = ({
           {partidosCancelados.length === 0 ? (
             <p className="text-gray-500">No hay partidos cancelados.</p>
           ) : (
-            partidosCancelados.map((partido) => (
-              <PartidoCard
-                key={partido.id}
-                partido={partido}
-                tipo="cancelado"
-              />
-            ))
+            <>
+              {partidosPaginados.map((partido) => (
+                <PartidoCard
+                  key={partido.id}
+                  partido={partido}
+                  tipo="cancelado"
+                />
+              ))}
+              <Paginacion />
+            </>
           )}
         </div>
       )}

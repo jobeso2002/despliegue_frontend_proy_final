@@ -156,7 +156,8 @@ export const RoutesIndex = () => {
                 path="/dashboard/editar-club/:id"
                 element={<EditarClub />}
               />
-              <Route path="transferencia" element={<GestionTransferencias />} />
+              
+              
 
               <Route path="regdeportista" element={<RegDeportista />} />
               <Route path="listadeportista" element={<ListaDeportista />} />
@@ -203,7 +204,7 @@ export const RoutesIndex = () => {
                 element={<EditarClub />}
               />
 
-              <Route path="partidos" element={<GestionPartidos />} />
+              
             </>
           )}
 

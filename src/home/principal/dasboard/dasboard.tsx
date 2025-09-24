@@ -274,8 +274,9 @@ function Dashboard() {
             </button>
           </div>
 
-          <footer className="text-center py-4 bg-green-700 text-xs md:text-sm">
-            &copy; {new Date().getFullYear()} - Liga de voleibol
+         <footer className="text-center text-[11px] text-gray-300 p-2 leading-tight">
+            © 2025 - José Obeso - Yulith Carrascal Todos los derechos
+            reservados.
           </footer>
         </aside>
 

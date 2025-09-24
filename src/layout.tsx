@@ -182,6 +182,12 @@ const Layout = () => {
             </div>
           </div>
         </div>
+        <div className="text-center text-[11px] text-gray-300 p-2">
+          <span>
+            © 2025 - José Obeso - Yulith Carrascal Todos los derechos
+            reservados.
+          </span>
+        </div>
       </footer>
     </div>
   );
