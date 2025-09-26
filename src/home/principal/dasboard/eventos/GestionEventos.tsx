@@ -7,6 +7,7 @@ import EditarEventoForm from "./componentes/editarevento";
 import CambiarEstadoForm from "./componentes/cambiarestado";
 import { useAuthStore } from "@/store/authstore";
 import { GestionInscripciones } from "../inscripciones/inscripciones";
+import { ExportarEventosButton } from "./componentes/ExportarEventosButton";
 
 export const GestionEventos = () => {
   const [activeTab, setActiveTab] = useState<
@@ -275,13 +276,33 @@ export const GestionEventos = () => {
                   </button>
                 </div>
               )}
-              <button
-                onClick={() => setShowCrearEvento(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Crear Evento
-              </button>
+
+              <div className="flex gap-2">
+                <ExportarEventosButton
+                  eventos={eventosFiltrados[activeTab]}
+                  tipoExportacion={
+                    activeTab === "planificados"
+                      ? "planificados"
+                      : activeTab === "en_curso"
+                      ? "en_curso"
+                      : activeTab === "finalizados"
+                      ? "finalizados"
+                      : activeTab === "cancelados"
+                      ? "cancelados"
+                      : "todos"
+                  }
+                  disabled={loading}
+                />
+
+                <button
+                  onClick={() => setShowCrearEvento(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Crear Evento
+                </button>
+              </div>
             </div>
+            
           </div>
           <EventoTabs
             activeTab={activeTab}

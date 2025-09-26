@@ -1,4 +1,3 @@
-// En src/store/resultado/resultado.store.ts
 import { create } from "zustand";
 import { CrearResultado, ObtenerResultadoPorPartido } from "@/services/resultado/resultado.service";
 import { CreateResultado, Resultado } from "@/interface/resultado/resultado.interface";

@@ -48,6 +48,13 @@ export interface Partido {
     setsVisitante: number;
     ganador: string;
     destacados?: string;
+    duracion?: number;
+    observaciones?: string;
+    sets?: Array<{
+      numeroSet: number;
+      puntosLocal: number;
+      puntosVisitante: number;
+    }>;
   };
 }
 

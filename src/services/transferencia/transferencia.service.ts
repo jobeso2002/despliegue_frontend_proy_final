@@ -1,7 +1,7 @@
 import { Api } from "@/config/axios_base.config";
 import { CreateTransferencia } from "@/interface/transferencia/transferencia.interface";
 
-// services/transferencia/transferencia.service.ts
+
 export const CreateTransferencias = async (data: CreateTransferencia) => {
   try {
     // Transforma los datos al formato que espera el backend

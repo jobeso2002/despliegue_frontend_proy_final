@@ -1,4 +1,3 @@
-// src/stores/inscripcion.store.ts
 import { create } from "zustand";
 
 import {

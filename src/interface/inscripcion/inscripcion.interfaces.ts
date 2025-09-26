@@ -1,5 +1,3 @@
-// src/interface/inscripcion/inscripcion.interface.ts
-
 import { Club } from "../club/club.interface";
 import { Evento } from "../evento/evento.interface";
 import { User } from "../user/user.interface";

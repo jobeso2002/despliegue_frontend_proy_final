@@ -1,4 +1,3 @@
-// src/interface/evento/evento.interface.ts
 export interface Evento {
   id: number;
   nombre: string;

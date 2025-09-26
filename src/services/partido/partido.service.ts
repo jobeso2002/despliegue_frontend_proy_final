@@ -31,7 +31,8 @@ export const ConsultarPartidos = async (params?: {
     const response = await Api.get("/partido", {
       params: {
         ...params,
-        includeEvento: true // Siempre incluir el evento
+        includeEvento: true, // Siempre incluir el evento
+        includeResultado: true, // Siempre incluir el resultado
       }
     });
     return response.data;

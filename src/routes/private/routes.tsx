@@ -1,4 +1,3 @@
-// src/components/RoleRoute.tsx
 import { Outlet, Navigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authstore";
 import { RoleType } from "@/enums/roles/role";

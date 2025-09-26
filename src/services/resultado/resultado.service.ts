@@ -28,10 +28,12 @@ export const CrearResultado = async (data: CreateResultado) => {
 export const ObtenerResultadoPorPartido = async (partidoId: number) => {
   try {
     const response = await Api.get(`/resultado/partido/${partidoId}`);
+    console.log(`Resultado para partido ${partidoId}:`, response.data); // Debug
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 404) {
+        console.log(`No se encontró resultado para partido ${partidoId}`);
         return null; // Resultado no existe es un caso válido
       }
       console.error("Error al obtener resultado:", error.response?.data);

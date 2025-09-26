@@ -1,6 +1,6 @@
 import { Partido } from "@/interface/partido/partido.interface";
 import { PartidoCard } from "./partidocard";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 
 interface PartidoListProps {
   activeTab: "programados" | "en_juego" | "finalizados" | "cancelados";
@@ -40,42 +40,42 @@ export const PartidoList = ({
     cancelados: 1,
   });
 
-  const filtrarPartidos = (partidos: Partido[]) => {
+    const filtrarPartidos = useCallback(
+  (partidos: Partido[]) => {
     return partidos.filter((partido) => {
       const cumpleEvento = eventoFiltro
-        ? partido.evento?.id === eventoFiltro ||
-          partido.id_evento === eventoFiltro
+        ? partido.evento?.id === eventoFiltro || partido.id_evento === eventoFiltro
         : true;
 
       const cumpleUbicacion = ubicacionFiltro
-        ? partido.ubicacion
-            .toLowerCase()
-            .includes(ubicacionFiltro.toLowerCase())
+        ? partido.ubicacion.toLowerCase().includes(ubicacionFiltro.toLowerCase())
         : true;
 
       return cumpleEvento && cumpleUbicacion;
     });
-  };
+  },
+  [eventoFiltro, ubicacionFiltro] // dependencias reales
+);
 
   // Aplicar filtros a cada categoría
   const partidosProgramados = useMemo(
     () => filtrarPartidos(partidos.filter((p) => p.estado === "programado")),
-    [partidos, eventoFiltro, ubicacionFiltro]
+    [partidos, filtrarPartidos]
   );
 
   const partidosEnJuego = useMemo(
     () => filtrarPartidos(partidos.filter((p) => p.estado === "en_juego")),
-    [partidos, eventoFiltro, ubicacionFiltro]
+    [partidos, filtrarPartidos]
   );
 
   const partidosFinalizados = useMemo(
     () => filtrarPartidos(partidos.filter((p) => p.estado === "finalizado")),
-    [partidos, eventoFiltro, ubicacionFiltro]
+    [partidos, filtrarPartidos]
   );
 
   const partidosCancelados = useMemo(
     () => filtrarPartidos(partidos.filter((p) => p.estado === "cancelado")),
-    [partidos, eventoFiltro, ubicacionFiltro]
+    [partidos, filtrarPartidos]
   );
 
   // Obtener partidos paginados según la pestaña activa

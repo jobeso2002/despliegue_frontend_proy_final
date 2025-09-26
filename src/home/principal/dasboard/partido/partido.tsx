@@ -8,6 +8,7 @@ import CambiarEstadoPartido from "./componentes/cambiarestado";
 
 import { toast } from "sonner";
 import { useEventoStore } from "@/store/evento/evento";
+import { ExportarPartidosButton } from "./componentes/ExportarPartidosButton";
 
 export const GestionPartidos = () => {
   const [activeTab, setActiveTab] = useState<
@@ -110,53 +111,73 @@ export const GestionPartidos = () => {
       !showCambiarEstado ? (
         <>
           <div className="mb-6 flex flex-col md:flex-row gap-4">
-            <div className="relative flex-grow">
-              <input
-                type="text"
-                placeholder="Buscar por ubicación..."
-                className="w-full p-2 border rounded pl-10"
-                value={ubicacionFiltro}
-                onChange={(e) => setUbicacionFiltro(e.target.value)}
-              />
-              <svg
-                className="absolute left-3 top-3 h-4 w-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            <div className="flex flex-col md:flex-row gap-4 flex-grow">
+              <div className="relative flex-grow">
+                <input
+                  type="text"
+                  placeholder="Buscar por ubicación..."
+                  className="w-full p-2 border rounded pl-10"
+                  value={ubicacionFiltro}
+                  onChange={(e) => setUbicacionFiltro(e.target.value)}
                 />
-              </svg>
+                <svg
+                  className="absolute left-3 top-3 h-4 w-4 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+
+              <select
+                className="p-2 border rounded"
+                value={eventoFiltro || ""}
+                onChange={(e) =>
+                  setEventoFiltro(
+                    e.target.value ? Number(e.target.value) : undefined
+                  )
+                }
+              >
+                <option value="">Todos los eventos</option>
+                {eventos.map((evento) => (
+                  <option key={evento.id} value={evento.id}>
+                    {evento.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <select
-              className="p-2 border rounded"
-              value={eventoFiltro || ""}
-              onChange={(e) =>
-                setEventoFiltro(
-                  e.target.value ? Number(e.target.value) : undefined
-                )
-              }
-            >
-              <option value="">Todos los eventos</option>
-              {eventos.map((evento) => (
-                <option key={evento.id} value={evento.id}>
-                  {evento.nombre}
-                </option>
-              ))}
-            </select>
+            <div className="flex gap-2">
+              <ExportarPartidosButton
+                partidos={partidos}
+                tipoExportacion={
+                  activeTab === "programados"
+                    ? "programados"
+                    : activeTab === "finalizados"
+                    ? "finalizados"
+                    : activeTab === "en_juego"
+                    ? "en_juego"
+                    : activeTab === "cancelados"
+                    ? "cancelados"
+                    : "todos"
+                }
+                disabled={loading}
+              />
 
-            <button
-              onClick={() => setShowProgramarPartido(true)}
-              className="ml-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              disabled={loading}
-            >
-              {loading ? "Cargando..." : "Programar Partido"}
-            </button>
+              <button
+                onClick={() => setShowProgramarPartido(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                disabled={loading}
+              >
+                {loading ? "Cargando..." : "Programar Partido"}
+              </button>
+            </div>
           </div>
 
           <PartidoList

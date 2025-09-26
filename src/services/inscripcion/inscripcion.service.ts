@@ -1,4 +1,3 @@
-// src/services/inscripcion/inscripcion.service.ts
 import { Api } from "@/config/axios_base.config";
 import {
   CreateInscripcion,

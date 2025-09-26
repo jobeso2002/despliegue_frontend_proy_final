@@ -1,4 +1,3 @@
-// src/services/evento/evento.service.ts
 import { Api } from "@/config/axios_base.config";
 import {
   CreateEvento,
