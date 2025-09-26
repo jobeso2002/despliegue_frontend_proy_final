@@ -56,7 +56,7 @@ export const ExportarPartidosButton: React.FC<ExportarPartidosButtonProps> = ({
       );
     } catch (error) {
       console.error("Error al exportar:", error);
-      toast.error("Error al exportar los partidos");
+      toast.error("no hay partidos para exportar");
     }
   };
 

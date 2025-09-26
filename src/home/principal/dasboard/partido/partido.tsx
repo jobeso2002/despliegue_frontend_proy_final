@@ -49,6 +49,22 @@ export const GestionPartidos = () => {
     obtenerPartidos();
   }, [consultarEventos, obtenerPartidos]);
 
+  // Agrega esta función para filtrar partidos por pestaña activa
+const partidosFiltradosPorTab = partidos.filter(partido => {
+  switch (activeTab) {
+    case 'programados':
+      return partido.estado === 'programado';
+    case 'en_juego':
+      return partido.estado === 'en_juego';
+    case 'finalizados':
+      return partido.estado === 'finalizado';
+    case 'cancelados':
+      return partido.estado === 'cancelado';
+    default:
+      return true;
+  }
+});
+
   const handleEditarPartido = async (id: number) => {
     await obtenerPartidoPorId(id);
     setSelectedPartido(id);
@@ -155,7 +171,7 @@ export const GestionPartidos = () => {
 
             <div className="flex gap-2">
               <ExportarPartidosButton
-                partidos={partidos}
+                partidos={partidosFiltradosPorTab}
                 tipoExportacion={
                   activeTab === "programados"
                     ? "programados"
@@ -167,7 +183,7 @@ export const GestionPartidos = () => {
                     ? "cancelados"
                     : "todos"
                 }
-                disabled={loading}
+                disabled={loading || partidos.length === 0}
               />
 
               <button
