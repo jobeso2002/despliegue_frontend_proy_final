@@ -291,6 +291,7 @@ export const GestionEventos = () => {
                       ? "cancelados"
                       : "todos"
                   }
+                  todosLosEventos={eventos} // Pasar todos los eventos sin filtrar
                   disabled={loading}
                 />
 

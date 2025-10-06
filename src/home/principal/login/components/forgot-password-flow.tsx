@@ -1,18 +1,18 @@
-// src/home/principal/login/cambiarcontrasena.tsx - ACTUALIZADO
+// src/home/principal/login/forgot-password-email.tsx
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useAuthStore } from "@/store/authstore";
 import { toast } from "sonner";
 
-export function CambiarPassword() {
+export function ForgotPasswordEmail() {
+  const navigate = useNavigate();
   const { forgotPassword, loading, clearError } = useAuthStore();
-  const [error, setError] = React.useState<string>("");
-  const [success, setSuccess] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmitEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,37 +25,26 @@ export function CambiarPassword() {
     }
 
     try {
-      await forgotPassword(email);
-      setSuccess("Se ha enviado un correo con las instrucciones para restablecer tu contraseña");
-      toast.success("Correo enviado exitosamente");
+      console.log('📤 Enviando solicitud para:', email);
+      const result = await forgotPassword(email);
+      console.log('✅ Respuesta recibida:', result);
+      
+      if (result.success && result.resetToken) {
+        console.log('🎯 Token recibido, navegando a paso 2...');
+        
+        // Navegar a la ruta de reset con los parámetros
+        navigate(`/reset-password-direct?email=${encodeURIComponent(email)}&token=${result.resetToken}`);
+        
+      } else {
+        setError(result.message || "Error en la verificación");
+        toast.error("Error en la verificación");
+      }
     } catch (error: any) {
-      console.error("Error al enviar correo:", error);
-      setError(error.message || "Error al enviar el correo. Por favor intenta nuevamente.");
-      toast.error("Error al enviar el correo");
+      console.error("❌ Error:", error);
+      setError(error.message || "Error al verificar el correo");
+      toast.error("Error al verificar correo");
     }
   };
-
-  if (success) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-gradient-to-r from-green-300 to-white">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 text-center">
-          <div className="mb-4">
-            <svg className="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h2 className="text-xl font-bold text-green-600 mb-4">¡Correo enviado!</h2>
-          <p className="text-gray-600 mb-4">{success}</p>
-          <p className="text-sm text-gray-500 mb-4">
-            Revisa tu bandeja de entrada y sigue las instrucciones para restablecer tu contraseña.
-          </p>
-          <Link to="/login" className="text-blue-600 hover:underline">
-            Volver al login
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="h-screen flex items-center justify-center bg-gradient-to-r from-green-300 to-white">
@@ -65,7 +54,7 @@ export function CambiarPassword() {
             Recuperar Contraseña
           </h1>
           <p className="text-sm text-gray-600 mt-2 text-center">
-            Ingresa tu email para recibir instrucciones de restablecimiento
+            Ingresa tu email para verificar tu identidad
           </p>
         </div>
 
@@ -90,13 +79,12 @@ export function CambiarPassword() {
               placeholder="email@example.com"
             />
           </div>
-          
           <Button
             type="submit"
             className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-300"
             disabled={loading}
           >
-            {loading ? "Enviando..." : "Enviar Instrucciones"}
+            {loading ? "Verificando..." : "Continuar"}
           </Button>
         </form>
 

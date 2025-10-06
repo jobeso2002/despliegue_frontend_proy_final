@@ -1,7 +1,19 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/store/usuario/user";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function ListaUsuarios() {
   const { persona, consultarUsuario, eliminarUsuario } = useUserStore();
@@ -26,13 +38,12 @@ function ListaUsuarios() {
   }, [consultarUsuario]);
 
   const handleEliminar = async (id: number, username: string) => {
-    if (window.confirm(`¿Estás seguro de eliminar a ${username}?`)) {
-      try {
-        await eliminarUsuario(id);
-      } catch (err) {
-        setError("No se pudo eliminar el usuario. Intente nuevamente.");
-        console.error("Error al eliminar usuario:", err);
-      }
+    try {
+      await eliminarUsuario(id);
+      toast.success(`Usuario ${username} eliminado exitosamente.`);
+    } catch (err) {
+      console.error("Error al eliminar usuario:", err);
+      toast.error("No se pudo eliminar el usuario. Intente nuevamente.");
     }
   };
 
@@ -119,20 +130,41 @@ function ListaUsuarios() {
                       </td>
                       <td className="border  px-3 py-2  text-right text-sm font-medium">
                         <div className="flex flex-col sm:flex-row gap-2 justify-end">
-                          <Link
-                            to={`/dashboard/editar-usuario/${user.id}`}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Editar✏️
-                          </Link>
-                          <button
-                            onClick={() =>
-                              handleEliminar(user.id, user.username)
-                            }
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            Eliminar🗑️
+                          <button className="inline-flex items-center px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm transition-colors">
+                            <Link to={`/dashboard/editar-usuario/${user.id}`}>
+                              Editar✏️
+                            </Link>
                           </button>
+
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <button className="inline-flex items-center px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm transition-colors">
+                                <span className="mr-1">🗑️</span> Eliminar
+                              </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  ¿Seguro que quieres eliminar a {user.username}{" "}
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Esta acción no se puede deshacer y eliminará
+                                  permanentemente al deportista.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() =>
+                                    handleEliminar(user.id, user.username)
+                                  }
+                                  className="bg-red-600 hover:bg-red-700"
+                                >
+                                  Sí, eliminar
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </td>
                     </tr>

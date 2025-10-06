@@ -6,22 +6,31 @@ import liga from "@/assets/liga.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authstore";
 import { useForm } from "@/components/hooks/useform";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
-  const { login, error, loading, isAuthenticated } = useAuthStore();
+  const { login, error, loading, isAuthenticated, passwordStatus } =
+    useAuthStore();
   const navigate = useNavigate();
   const { form, handleChange } = useForm({
     email: "",
     password: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   // Efecto para redirigir cuando la autenticación cambia
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dasboard");
+      // Si la contraseña está expirada, redirigir al cambio de contraseña
+      if (passwordStatus?.expired) {
+        navigate("/cambiar-contrasena-forzada");
+      } else {
+        navigate("/dashboard");
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, passwordStatus, navigate]);
 
   // Efecto para redirigir cuando la autenticación cambia
 
@@ -30,7 +39,7 @@ function Login() {
     try {
       await login(form);
 
-      navigate("/dasboard");
+      // navigate("/dasboard");
     } catch (error) {
       console.error("Error en el login:", error);
     }
@@ -74,7 +83,7 @@ function Login() {
               placeholder="email@example.com"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <Label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
@@ -83,7 +92,7 @@ function Login() {
             </Label>
             <Input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               value={form.password}
               onChange={handleChange}
@@ -92,6 +101,13 @@ function Login() {
               className="p-3 rounded block border-gray-300 focus:ring-green-500 focus:border-green-500 w-full"
               placeholder="********"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-8 text-sm text-gray-600 hover:text-gray-900"
+            >
+              {showPassword ?  <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
@@ -108,7 +124,7 @@ function Login() {
               </Label>
             </div>
             <Link
-              to="/cambiar-contrasena"
+              to="/olvide-contrasena"
               className="text-sm text-green-600 hover:underline"
             >
               ¿Has olvidado tu contraseña?

@@ -118,7 +118,7 @@ function ListaClub() {
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-6">
           <Input
             type="text"
-            placeholder="Buscar por apellido o email"
+            placeholder="Buscar por nombre del club o email"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -206,12 +206,12 @@ function ListaClub() {
                       </td>
                       <td className="border  px-3 py-2 text-right text-sm font-medium">
                         <div className="flex flex-col sm:flex-row gap-2">
-                          <Link
-                            to={`/dashboard/editar-club/${club.id}`}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Editar✏️
-                          </Link>
+                          <button className="inline-flex items-center px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm transition-colors">
+                            <Link to={`/dashboard/editar-club/${club.id}`}>
+                              Editar✏️
+                            </Link>
+                          </button>
+
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <button className="inline-flex items-center px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm transition-colors">
@@ -273,7 +273,7 @@ function ListaClub() {
                       className={`px-3 py-1 rounded ${
                         currentPage === number
                           ? "bg-green-600 text-white hover:bg-green-800"
-                        : "bg-green-300 text-white hover:bg-green-800"
+                          : "bg-green-300 text-white hover:bg-green-800"
                       }`}
                     >
                       {number}

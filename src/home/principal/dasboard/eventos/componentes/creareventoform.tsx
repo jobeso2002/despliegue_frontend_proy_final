@@ -24,8 +24,8 @@ const CrearEventoForm: React.FC<CrearEventoFormProps> = ({
     e.preventDefault();
     onSubmit({
       ...form,
-      fechaInicio: new Date(form.fechaInicio).toISOString(),
-      fechaFin: new Date(form.fechaFin).toISOString(),
+      fechaInicio: form.fechaInicio,
+      fechaFin: form.fechaFin,
     });
     toast.success("Evento creado exitosamente");
   };

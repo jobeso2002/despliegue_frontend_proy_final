@@ -3,10 +3,11 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@/components/hooks/useform";
 import { RolesStore } from "@/store/role/role";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { useUserStore } from "@/store/usuario/user";
 import liga from "@/assets/liga.jpg";
+import { Eye, EyeOff } from "lucide-react";
 
 function CrearUsuario() {
   const { crear_persona } = useUserStore();
@@ -19,6 +20,7 @@ function CrearUsuario() {
   });
 
   const { ConsultRole, roles } = RolesStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (roles.length === 0) {
@@ -78,20 +80,28 @@ function CrearUsuario() {
             />
           </div>
 
-          <div>
+          <div className="relative">
             <Label htmlFor="password">Contraseña</Label>
             <Input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               onChange={handleChange}
               required
               minLength={6}
               placeholder="Contraseña"
+              className="pr-10" // espacio para el botón
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-9 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
-          <div>
+          <div className="relative">
             <Label htmlFor="id_rol">Rol</Label>
             <select
               id="id_rol"

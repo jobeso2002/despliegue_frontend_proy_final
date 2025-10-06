@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import { decryptData, encryptData } from "./decrypt/decryptData";
 import { jwtDecode } from "jwt-decode";
-import { forgotPassword, loginService, resetPassword } from "@/services/auth/auth.service";
+import {
+  forgotPassword, loginService, resetPassword, changePasswordAuthenticated,
+  checkPasswordExpiration
+} from "@/services/auth/auth.service";
 
 interface AuthState {
   user: {
@@ -13,24 +16,44 @@ interface AuthState {
       name: string;
     };
     permisos?: string[]; // Añadir permisos si los necesitas
+    passwordExpired?: boolean; // NUEVO: para controlar expiración
   } | null;
   token: string | null;
   error: string | null;
   isAuthenticated: boolean;
   loading: boolean;
+  passwordStatus: { // NUEVO: estado de expiración
+    expired: boolean;
+    daysRemaining?: number;
+  } | null;
+
+
   login: (data: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   initializeAuth: () => void;
-  forgotPassword: (email: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<{ 
+    success: boolean; 
+    resetToken?: string; 
+    message?: string 
+  }>;
   resetPassword: (email: string, token: string, newPassword: string) => Promise<void>;
+  changePassword: (data: {
+    currentPassword: string;
+    newPassword: string;
+    newPasswordConfirmation: string;
+  }) => Promise<void>;
+  checkPasswordExpirationStatus: () => Promise<void>;
+  clearError: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   token: null,
   error: null,
   isAuthenticated: false,
   loading: true,
+  passwordStatus: null,
 
   initializeAuth: () => {
     const storedToken = localStorage.getItem("token");
@@ -84,6 +107,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         error: null,
         loading: false,
       });
+      // Verificar expiración de contraseña después de inicializar
+      get().checkPasswordExpirationStatus();
     } catch (error) {
       console.error("Error al inicializar auth:", error);
       localStorage.removeItem("token");
@@ -139,6 +164,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         error: null,
         loading: false,
       });
+      // Verificar expiración después del login
+      get().checkPasswordExpirationStatus();
     } catch (error: any) {
       console.error("Detalles del error:", error.response?.data);
       set({
@@ -159,21 +186,22 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: false,
       error: null,
       loading: false,
+      passwordStatus: null,
     });
   },
 
   forgotPassword: async (email: string) => {
-    set({ loading: true, error: null });
-    try {
-      await forgotPassword(email);
-      // Puedes manejar el éxito aquí o en el componente
-    } catch (error: any) {
-      set({ error: error.response?.data?.message || "Error al solicitar cambio de contraseña" });
-      throw error;
-    } finally {
-      set({ loading: false });
-    }
-  },
+  set({ loading: true, error: null });
+  try {
+    const result = await forgotPassword(email);
+    return result; // Devuelve el resultado con el token
+  } catch (error: any) {
+    set({ error: error.response?.data?.message || "Error al solicitar cambio de contraseña" });
+    throw error;
+  } finally {
+    set({ loading: false });
+  }
+},
 
   resetPassword: async (email: string, token: string, newPassword: string) => {
     set({ loading: true, error: null });
@@ -187,4 +215,42 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ loading: false });
     }
   },
+
+  // NUEVO: Cambiar contraseña cuando estás autenticado
+  changePassword: async (data: {
+    currentPassword: string;
+    newPassword: string;
+    newPasswordConfirmation: string;
+  }) => {
+    set({ loading: true, error: null });
+    try {
+      await changePasswordAuthenticated(data);
+      // Si el cambio fue exitoso, actualizamos el estado de expiración
+      await get().checkPasswordExpirationStatus();
+    } catch (error: any) {
+      set({ error: error.response?.data?.message || "Error al cambiar contraseña" });
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // NUEVO: Verificar estado de expiración
+  checkPasswordExpirationStatus: async () => {
+    try {
+      const response = await checkPasswordExpiration();
+      set({ passwordStatus: response.data });
+      
+      // Si la contraseña está expirada, marcamos al usuario
+      if (response.data.expired) {
+        set(state => ({
+          user: state.user ? { ...state.user, passwordExpired: true } : null
+        }));
+      }
+    } catch (error) {
+      console.error("Error al verificar expiración:", error);
+    }
+  },
+
+  clearError: () => set({ error: null }),
 }));

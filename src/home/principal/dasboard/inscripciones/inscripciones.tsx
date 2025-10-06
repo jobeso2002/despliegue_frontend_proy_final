@@ -222,9 +222,9 @@ export const GestionInscripciones = ({
                 <div key={inscripcion.id} className="border rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-bold">{inscripcion.club.nombre}</h3>
+                      <h3 className="font-bold">{inscripcion.club?.nombre || "Club no disponible"}</h3>
                       <p className="text-sm text-gray-600">
-                        Evento: {inscripcion.evento.nombre}
+                        Evento: {inscripcion.evento?.nombre || "Evento no disponible"}
                       </p>
                       <p className="text-sm text-gray-600">
                         Fecha inscripción:{" "}
@@ -233,7 +233,7 @@ export const GestionInscripciones = ({
                         ).toLocaleDateString()}
                       </p>
                       <p className="text-sm text-gray-600">
-                        Registrada por: {inscripcion.usuarioRegistra.username}
+                        Registrada por: {inscripcion.usuarioRegistra.username || "Usuario no disponible"}
                       </p>
                     </div>
                     <span

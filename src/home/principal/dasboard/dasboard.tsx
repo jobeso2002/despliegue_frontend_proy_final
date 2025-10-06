@@ -2,6 +2,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import liga from "@/assets/nuevofondo.jpg";
 import { useAuthStore } from "@/store/authstore";
+import { ChangePasswordModal } from "../../../components/cambiarcontrasenaperfil";
 
 function Dashboard() {
   const { logout, user } = useAuthStore();
@@ -14,6 +15,8 @@ function Dashboard() {
 
   const [EventosMenuOpen, setEventosMenuOpen] = useState(false);
   const [ClubesMenuOpen, setClubesMenuOpen] = useState(false);
+
+  const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -77,7 +80,19 @@ function Dashboard() {
             {menuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                 <button
-                  onClick={handleLogout}
+                  onClick={() => {
+                    setChangePasswordModalOpen(true);
+                    setMenuOpen(false); // Cerrar menú al hacer click
+                  }}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
+                  Cambiar contraseña
+                </button>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMenuOpen(false); // Cerrar menú al hacer click
+                  }}
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                 >
                   Cerrar sesión
@@ -273,12 +288,17 @@ function Dashboard() {
               Cerrar sesión
             </button>
           </div>
-
-         <footer className="text-center text-[11px] text-gray-300 p-2 leading-tight">
+          <footer className="text-center text-[11px] text-gray-300 p-2 leading-tight">
             © 2025 - José Obeso - Yulith Carrascal Todos los derechos
             reservados.
           </footer>
         </aside>
+
+        {/* ✅ CORRECCIÓN: Modal fuera del aside y antes del main */}
+        <ChangePasswordModal 
+          isOpen={changePasswordModalOpen}
+          onClose={() => setChangePasswordModalOpen(false)}
+        />
 
         {/* Contenido principal */}
         <main className="flex-grow p-6 bg-gray-100">

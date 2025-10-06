@@ -33,8 +33,10 @@ import GestionTransferencias from "@/home/principal/dasboard/club/transferenciap
 import { EditarUsuario } from "@/home/principal/dasboard/gestion_usuarios/editarusuario";
 import { GestionEventos } from "@/home/principal/dasboard/eventos/GestionEventos";
 import { Path } from "@/enums/path/path";
-import { CambiarPassword } from "@/home/principal/login/cambiarcontrasena";
 import CrearUsuario from "@/home/principal/registrar/crearusuario";
+import { ForcePasswordChange } from "@/home/principal/login/components/ForcePasswordChange";
+import { ForgotPasswordEmail } from "@/home/principal/login/components/forgot-password-flow";
+import { ResetPasswordDirect } from "@/home/principal/login/components/reset-password";
 
 // src/routes/route.tsx
 export const RoutesIndex = () => {
@@ -65,8 +67,15 @@ export const RoutesIndex = () => {
           />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/login" element={<Login />} />
-
-          <Route path="/cambiar-contrasena" element={<CambiarPassword />} />
+          <Route
+            path="/cambiar-contrasena-forzada"
+            element={<ForcePasswordChange />}
+          />
+          <Route path="/olvide-contrasena" element={<ForgotPasswordEmail />} />
+          <Route
+            path="/reset-password-direct"
+            element={<ResetPasswordDirect />}
+          />
         </Route>
 
         {/* Rutas protegidas - Dashboard */}
@@ -156,8 +165,6 @@ export const RoutesIndex = () => {
                 path="/dashboard/editar-club/:id"
                 element={<EditarClub />}
               />
-              
-              
 
               <Route path="regdeportista" element={<RegDeportista />} />
               <Route path="listadeportista" element={<ListaDeportista />} />
@@ -203,8 +210,6 @@ export const RoutesIndex = () => {
                 path="/dashboard/editar-club/:id"
                 element={<EditarClub />}
               />
-
-              
             </>
           )}
 
@@ -212,7 +217,7 @@ export const RoutesIndex = () => {
           {user?.role?.name === RoleType.DEPORTISTA && (
             <>
               <Route path="regdeportista" element={<RegDeportista />} />
-              <Route path="listadeportista" element={<ListaDeportista />} />
+
               <Route
                 path="/dashboard/editar-deportista/:id"
                 element={<EditarDeportista />}

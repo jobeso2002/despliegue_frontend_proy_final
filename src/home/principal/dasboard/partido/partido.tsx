@@ -183,6 +183,7 @@ const partidosFiltradosPorTab = partidos.filter(partido => {
                     ? "cancelados"
                     : "todos"
                 }
+                todosLosPartidos={partidos} // Pasar todos los partidos sin filtrar
                 disabled={loading || partidos.length === 0}
               />
 
