@@ -121,7 +121,7 @@ export function ResetPasswordDirect() {
               required
               minLength={6}
               className="p-3 rounded block border-gray-300 focus:ring-green-500 focus:border-green-500 w-full"
-              placeholder="1 mayuscula y Mínimo 6 caracteres "
+              placeholder="1 mayúscula, mínimo 12 caracteres y 1 carácter especial"
             />
             <button
               type="button"

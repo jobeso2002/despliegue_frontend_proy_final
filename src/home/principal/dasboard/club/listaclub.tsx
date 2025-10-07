@@ -127,7 +127,7 @@ function ListaClub() {
             className="w-full sm:w-64"
           />
           <Button
-            className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+            className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
             onClick={handleExportToExcel}
           >
             Exportar a Excel

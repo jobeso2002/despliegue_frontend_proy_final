@@ -77,7 +77,7 @@ function ListaUsuarios() {
         </h1>
 
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4">
-          <Button className="bg-blue-600 hover:bg-blue-700 w-full md:w-auto">
+          <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
             <Link to="/dashboard/crear-usuario">Crear Nuevo Usuario</Link>
           </Button>
 

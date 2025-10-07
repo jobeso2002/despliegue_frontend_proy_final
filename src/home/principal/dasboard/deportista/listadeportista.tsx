@@ -207,27 +207,65 @@ const obtenerClubActualDeportista = async (deportistaId: number): Promise<number
     setMotivo("");
   };
 
-  const handleExportExcel = () => {
-    // Preparar los datos para exportar con nombres de propiedades consistentes
-    const dataToExport = filteredUsers.map((deportista) => ({
-      ID: deportista.id,
-      Tipo_Documento: deportista.tipoDocumento,
-      N_Identificacion: deportista.documentoIdentidad,
-      Primer_Nombre: deportista.primer_nombre,
-      Segundo_Nombre: deportista.segundo_nombre || "", // Manejar valores undefined
-      Primer_Apellido: deportista.primer_apellido,
-      Segundo_Apellido: deportista.segundo_apellido || "", // Manejar valores undefined
-      Fecha_Nacimiento: deportista.fechaNacimiento,
-      Genero: deportista.genero,
-      Telefono: deportista.telefono,
-      Direccion: deportista.direccion, // Sin tilde para consistencia
-      Email: deportista.email,
-    }));
+  const handleExportExcel = async () => {
+  try {
+    // Función auxiliar para obtener URLs correctas
+    const getFileUrl = (filePath: string | undefined, fileType: string) => {
+      if (!filePath) return `Sin ${fileType}`;
+      
+      // Si ya es una URL completa (comienza con http o https), úsala directamente
+      if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+        return filePath;
+      }
+      
+      // Si es una ruta relativa, construye la URL completa con el baseURL
+      return `${Api.defaults.baseURL}${filePath}`;
+    };
 
-    // Crear hoja de trabajo con encabezados explícitos
+    // Preparar los datos para exportar con URLs de archivos
+    const dataToExport = await Promise.all(
+      filteredUsers.map(async (deportista) => {
+        // Obtener las URLs usando la función auxiliar
+        const fotoUrl = getFileUrl(deportista.foto, "foto");
+        const documentoIdentidadUrl = getFileUrl(deportista.documentoIdentidadPdf, "documento");
+        const registroCivilUrl = getFileUrl(deportista.registroCivilPdf, "registro civil");
+        const afiliacionUrl = getFileUrl(deportista.afiliacionPdf, "afiliación");
+        const certificadoEpsUrl = getFileUrl(deportista.certificadoEpsPdf, "certificado EPS");
+        const permisoResponsableUrl = getFileUrl(deportista.permisoResponsablePdf, "permiso responsable");
+
+        return {
+          ID: deportista.id,
+          Foto: fotoUrl,
+          Tipo_Documento: deportista.tipoDocumento,
+          N_Identificacion: deportista.documentoIdentidad,
+          Primer_Nombre: deportista.primer_nombre,
+          Segundo_Nombre: deportista.segundo_nombre || "",
+          Primer_Apellido: deportista.primer_apellido,
+          Segundo_Apellido: deportista.segundo_apellido || "",
+          Fecha_Nacimiento: deportista.fechaNacimiento,
+          Genero: deportista.genero,
+          Telefono: deportista.telefono,
+          Direccion: deportista.direccion,
+          Email: deportista.email,
+          Posicion: deportista.posicion || "",
+          Numero_Camiseta: deportista.numero_camiseta || "",
+          Tipo_Sangre: deportista.tipo_sangre || "",
+          Estado: deportista.estado || "",
+          // URLs de documentos
+          Documento_Identidad_URL: documentoIdentidadUrl,
+          Registro_Civil_URL: registroCivilUrl,
+          Afiliacion_URL: afiliacionUrl,
+          Certificado_EPS_URL: certificadoEpsUrl,
+          Permiso_Responsable_URL: permisoResponsableUrl,
+        };
+      })
+    );
+
+    // Crear hoja de trabajo
     const ws = XLSX.utils.json_to_sheet(dataToExport, {
       header: [
         "ID",
+        "Foto",
         "Tipo_Documento",
         "N_Identificacion",
         "Primer_Nombre",
@@ -239,14 +277,24 @@ const obtenerClubActualDeportista = async (deportistaId: number): Promise<number
         "Telefono",
         "Direccion",
         "Email",
+        "Posicion",
+        "Numero_Camiseta",
+        "Tipo_Sangre",
+        "Estado",
+        "Documento_Identidad_URL",
+        "Registro_Civil_URL",
+        "Afiliacion_URL",
+        "Certificado_EPS_URL",
+        "Permiso_Responsable_URL",
       ],
-      skipHeader: false, // Esto asegura que los encabezados se escriban correctamente
+      skipHeader: false,
     });
 
     // Ajustar anchos de columna
     ws["!cols"] = [
-      { width: 8 }, // ID
-      { width: 20 }, // Tipo Documento
+      { width: 8 },  // ID
+      { width: 30 }, // Foto (URL)
+      { width: 15 }, // Tipo Documento
       { width: 16 }, // N Identificación
       { width: 12 }, // Primer Nombre
       { width: 12 }, // Segundo Nombre
@@ -257,6 +305,15 @@ const obtenerClubActualDeportista = async (deportistaId: number): Promise<number
       { width: 12 }, // Teléfono
       { width: 20 }, // Dirección
       { width: 25 }, // Email
+      { width: 12 }, // Posición
+      { width: 15 }, // Número Camiseta
+      { width: 12 }, // Tipo Sangre
+      { width: 10 }, // Estado
+      { width: 40 }, // Documento Identidad URL
+      { width: 40 }, // Registro Civil URL
+      { width: 40 }, // Afiliación URL
+      { width: 40 }, // Certificado EPS URL
+      { width: 40 }, // Permiso Responsable URL
     ];
 
     // Crear libro de trabajo
@@ -264,11 +321,16 @@ const obtenerClubActualDeportista = async (deportistaId: number): Promise<number
     XLSX.utils.book_append_sheet(wb, ws, "Deportistas");
 
     // Exportar archivo
-    XLSX.writeFile(
-      wb,
-      `Deportistas_${new Date().toISOString().split("T")[0]}.xlsx`
-    );
-  };
+    const fileName = `Deportistas_${new Date().toISOString().split("T")[0]}.xlsx`;
+    XLSX.writeFile(wb, fileName);
+
+    toast.success(`Archivo ${fileName} exportado correctamente`);
+
+  } catch (error) {
+    console.error("Error al exportar a Excel:", error);
+    toast.error("Error al exportar el archivo Excel");
+  }
+};
 
   const headers = [
     "ID",
@@ -309,7 +371,7 @@ const obtenerClubActualDeportista = async (deportistaId: number): Promise<number
           className="p-2 border border-gray-300 rounded w-full sm:w-64"
         />
         <Button
-          className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+          className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
           onClick={handleExportExcel}
         >
           Exportar a Excel
