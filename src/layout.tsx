@@ -186,6 +186,7 @@ const Layout = () => {
           <span>
             © 2025 - José Obeso - Yulith Carrascal Todos los derechos
             reservados.
+            Universidad Popular del Cesar.
           </span>
         </div>
       </footer>

@@ -291,6 +291,7 @@ function Dashboard() {
           <footer className="text-center text-[11px] text-gray-300 p-2 leading-tight">
             © 2025 - José Obeso - Yulith Carrascal Todos los derechos
             reservados.
+            Universidad Popular del Cesar.
           </footer>
         </aside>
 
